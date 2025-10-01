@@ -16,7 +16,7 @@ export class CsvConverterService {
           const currentLine = lines[i].split(',');
 
           for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = currentLine[j];
+            obj[headers[j].trim()] = currentLine[j];
           }
 
           result.push(obj);
