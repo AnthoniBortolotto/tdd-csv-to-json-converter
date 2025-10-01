@@ -1,0 +1,43 @@
+services:
+  csv-converter-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: csv-converter-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - csv-converter-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: csv-converter-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - csv-converter-api
+    restart: unless-stopped
+    networks:
+      - csv-converter-network
+    profiles:
+      - production
+
+networks:
+  csv-converter-network:
+    driver: bridge
+
+volumes:
+  csv-converter-data:
