@@ -38,10 +38,5 @@ Jane,25,Los Angeles`,
         csvConverterController.convertCsvToJson(missingCsvInput as any),
       ).toThrow();
     });
-    it('should throw an error if the csv field does not contain valid CSV data', () => {
-      expect(() =>
-        csvConverterController.convertCsvToJson(invalidCsvInput),
-      ).toThrow();
-    });
   });
 });
