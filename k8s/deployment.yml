@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csv-to-json-converter-k8s-deployment
+spec:
+  selector:
+    matchLabels:
+      app: csv-to-json-converter
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: csv-to-json-converter
+    spec:
+      containers:
+        - name: csv-to-json-converter
+          image: lordofthe/csv-to-json-converter:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
